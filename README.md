@@ -1,4 +1,4 @@
-# FUTURE_FS_01
+# FUTURE_FS_02
 
 A simple web portfolio project with an HTML frontend, CSS styling, JavaScript interactions, and an optional Node.js server.
 
@@ -50,4 +50,3 @@ Then visit: `http://localhost:3000` (or port in `server.js`).
 
 - If you add README files for subfolders, include similar content with path details and run instructions.
 - This file is intentionally expanded so GitHub displays useful project documentation.
-
