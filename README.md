@@ -1,52 +1,118 @@
-# FUTURE_FS_02
+# Mini CRM
 
-A simple web portfolio project with an HTML frontend, CSS styling, JavaScript interactions, and an optional Node.js server.
+A full-stack Customer Relationship Management (CRM) application built with React.js frontend, Node.js/Express backend, and MySQL via Sequelize.
 
 ## 🚀 Project Overview
 
-- `index.html`: Main page markup.
-- `style.css`: Visual styling.
-- `script.js`: Client-side functionality.
-- `server.js`: Optional Node.js server (Express or plain HTTP). Use to serve static files locally.
+This repository contains a `mini-crm` folder with a complete CRM system:
 
-## 🛠️ Setup and Run
+- `mini-crm/client/` — React frontend app
+- `mini-crm/server/` — Express backend API with MySQL database
+- `mini-crm/package.json` — root scripts for running both client and server together
 
-1. Clone repository:
+## 🔧 Key Features
+
+- JWT-based admin authentication
+- Secure password hashing for admin accounts
+- Lead management: add, view, update, delete leads
+- Lead status workflow: `new`, `contacted`, `converted`
+- MySQL data persistence through Sequelize
+- Frontend and backend development setup with one command
+
+## 📦 Requirements
+
+- Node.js v14 or higher
+- npm
+- MySQL database server
+- Optional: VS Code or another editor
+
+## 📥 Installation
+
+1. Open the project root:
 
 ```bash
-git clone <repo-url>
-cd sathwik
+cd mini-crm
 ```
 
-2. Open `index.html` directly in browser, or run local server.
-
-### Option A: Live server extension (VS Code)
-- Install Live Server extension.
-- Right-click `index.html` → "Open with Live Server".
-
-### Option B: Node.js server
+2. Install dependencies:
 
 ```bash
-node server.js
+npm install
 ```
 
-Then visit: `http://localhost:3000` (or port in `server.js`).
+3. Install both frontend and backend dependencies:
 
-## ✅ Features
+```bash
+npm run install-all
+```
 
-- Responsive portfolio layout
-- Interactive client-side script support
-- Easy local development with optional local server
+## ⚙️ Environment Configuration
 
-## 📁 File structure
+Create a `.env` file inside `mini-crm/server/` with the following variables:
 
-- `index.html`
-- `style.css`
-- `script.js`
-- `server.js`
-- `README.md`
+```env
+DB_NAME=mini_crm_db
+DB_USER=root
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_DIALECT=mysql
+JWT_SECRET=your_jwt_secret
+PORT=5000
+```
+
+## 🚀 Running the App
+
+From `mini-crm/`, start both backend and frontend together:
+
+```bash
+npm run dev
+```
+
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:5000`
+
+### Run only backend
+
+```bash
+npm run server
+```
+
+### Run only frontend
+
+```bash
+npm run client
+```
+
+## 🔐 Default Admin Credentials
+
+The application creates a default admin user automatically if one does not exist.
+
+- Email: `admin@example.com`
+- Password: `admin123`
+
+## 🧩 API Endpoints
+
+- `POST /api/auth/login` — admin login
+- `GET /api/leads` — get all leads (protected)
+- `POST /api/leads` — create a new lead
+- `PUT /api/leads/:id` — update lead details/status (protected)
+- `DELETE /api/leads/:id` — delete a lead (protected)
+
+## 📁 Project Structure
+
+```
+mini-crm/
+  client/                  # React frontend
+  server/                  # Backend API
+    config/
+    middleware/
+    models/
+    routes/
+  package.json            # root package scripts
+```
 
 ## 📝 Notes
 
-- If you add README files for subfolders, include similar content with path details and run instructions.
-- This file is intentionally expanded so GitHub displays useful project documentation.
+- The backend uses Sequelize to sync models and create tables automatically.
+- The frontend proxy is configured to forward API requests to `http://localhost:5000`.
+- Make sure MySQL is running before starting the backend.
