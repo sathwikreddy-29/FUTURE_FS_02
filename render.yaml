@@ -3,22 +3,8 @@ services:
     name: mini-crm-backend
     runtime: node
     plan: free
-    buildCommand: >
-      if [ -f package.json ]; then
-        npm run install-server
-      elif [ -f mini-crm/package.json ]; then
-        cd mini-crm && npm run install-server
-      else
-        echo "package.json not found" && exit 1
-      fi
-    startCommand: >
-      if [ -f server/server.js ]; then
-        node server/server.js
-      elif [ -f mini-crm/server/server.js ]; then
-        cd mini-crm && npm start
-      else
-        echo "server.js not found" && exit 1
-      fi
+    buildCommand: cd mini-crm && npm run install-server
+    startCommand: cd mini-crm && npm start
     envVars:
       - key: NODE_ENV
         value: production

@@ -1,0 +1,8 @@
+{
+  "name": "future-fs-02-root",
+  "private": true,
+  "scripts": {
+    "postinstall": "cd mini-crm && npm install",
+    "start": "cd mini-crm && npm start"
+  }
+}
