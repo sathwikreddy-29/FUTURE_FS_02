@@ -1,6 +1,20 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
+const envApiUrl = process.env.REACT_APP_API_URL;
+const apiBaseURL = envApiUrl && envApiUrl !== 'https://your-render-backend-url.onrender.com'
+  ? envApiUrl
+  : 'https://mini-crm-backend.onrender.com';
+
+if (!envApiUrl || envApiUrl === 'https://your-render-backend-url.onrender.com') {
+  console.warn(
+    'REACT_APP_API_URL is not set or is still using the placeholder. Using fallback API URL:',
+    apiBaseURL
+  );
+}
+
+axios.defaults.baseURL = apiBaseURL;
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -31,7 +45,8 @@ export const AuthProvider = ({ children }) => {
       setAdmin({ token });
       return { success: true };
     } catch (error) {
-      return { success: false, message: error.response?.data?.message || 'Login failed' };
+      const message = error.response?.data?.message || error.message || 'Login failed';
+      return { success: false, message };
     }
   };
 
