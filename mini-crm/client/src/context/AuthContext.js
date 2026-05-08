@@ -8,7 +8,7 @@ const apiBaseURL = envApiUrl && envApiUrl !== 'https://your-render-backend-url.o
 
 if (!envApiUrl || envApiUrl === 'https://your-render-backend-url.onrender.com') {
   console.warn(
-    'REACT_APP_API_URL is not set or is still using the placeholder. Using fallback API URL:',
+    'REACT_APP_API_URL is not set or is still using the placeholder. Falling back to:',
     apiBaseURL
   );
 }
@@ -46,7 +46,10 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Login failed';
-      return { success: false, message };
+      const details = error.response
+        ? `${message}`
+        : `Unable to reach backend at ${apiBaseURL}: ${message}`;
+      return { success: false, message: details };
     }
   };
 
