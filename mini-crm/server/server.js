@@ -14,18 +14,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Database synchronization (creates tables if they don't exist)
-const createDefaultAdmin = require('./create-default-admin');
-
-sequelize.sync({ alter: false })
-  .then(async () => {
-    console.log('Database tables synced successfully');
-    await createDefaultAdmin();
-  })
-  .catch(err => {
-    console.error('Unable to sync database:', err);
-  });
-
 // Routes
 const authRoutes = require('./routes/authRoutes');
 const leadRoutes = require('./routes/leadRoutes');
@@ -40,8 +28,30 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
-module.exports = app;
+// Database synchronization and server startup
+async function startServer() {
+  try {
+    // Test database connection
+    await sequelize.authenticate();
+    console.log('✅ Database connected successfully');
+
+    // Sync database (creates tables if they don't exist)
+    await sequelize.sync({ alter: false });
+    console.log('✅ Database tables synced successfully');
+
+    // Create default admin
+    const createDefaultAdmin = require('./create-default-admin');
+    await createDefaultAdmin();
+
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+startServer();

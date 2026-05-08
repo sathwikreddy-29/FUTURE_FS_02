@@ -1,8 +1,11 @@
-{
+[0;31m[1m==> Exited with status 1[0m{
   "name": "mini-crm-server",
   "version": "1.0.0",
   "description": "Backend for Mini CRM",
   "main": "server.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
