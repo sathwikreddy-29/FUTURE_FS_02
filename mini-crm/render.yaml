@@ -20,7 +20,7 @@ services:
               name: mini-crm-db
               property: connectionString
 
-  - type: pserv
+  - type: postgres
     name: mini-crm-db
     ipAllowList: []
     plan: free
