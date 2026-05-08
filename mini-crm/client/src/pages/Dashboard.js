@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import LeadModal from '../components/LeadModal';
@@ -18,15 +18,7 @@ const Dashboard = () => {
 
   const { logout } = useAuth();
 
-  useEffect(() => {
-    fetchLeads();
-  }, []);
-
-  useEffect(() => {
-    filterLeads();
-  }, [leads, filters]);
-
-  const fetchLeads = async () => {
+  const fetchLeads = useCallback(async () => {
     try {
       const res = await axios.get('/api/leads');
       setLeads(res.data);
@@ -35,9 +27,9 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const filterLeads = () => {
+  const filterLeads = useCallback(() => {
     let filtered = leads;
 
     if (filters.status) {
@@ -52,7 +44,15 @@ const Dashboard = () => {
     }
 
     setFilteredLeads(filtered);
-  };
+  }, [leads, filters]);
+
+  useEffect(() => {
+    fetchLeads();
+  }, [fetchLeads]);
+
+  useEffect(() => {
+    filterLeads();
+  }, [filterLeads]);
 
   const handleStatusChange = async (leadId, newStatus) => {
     try {
@@ -103,15 +103,6 @@ const Dashboard = () => {
   const showToast = (message, type) => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
-  };
-
-  const getStatusBadge = (status) => {
-    const classes = {
-      new: 'status-new',
-      contacted: 'status-contacted',
-      converted: 'status-converted'
-    };
-    return <span className={`status-badge ${classes[status]}`}>{status}</span>;
   };
 
   const stats = {
