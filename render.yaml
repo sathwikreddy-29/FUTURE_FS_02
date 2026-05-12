@@ -13,10 +13,12 @@ services:
       - key: DB_HOST
         value: sql12.freesqldatabase.com
       - key: DB_USER
-        value: sql12821844
+        value: sql12826596
       - key: DB_PASSWORD
-        value: kabucxkbIu
+        value: VtyWzQNbuN
       - key: DB_NAME
-        value: sql12821844
+        value: sql12826596
+      - key: SETUP_SECRET
+        value: your_setup_secret_here
       - key: JWT_SECRET
         generateValue: true
