@@ -1,5 +1,7 @@
 # Mini CRM
 
+**Live Demo:** [https://future-fs-02-32m7.vercel.app](https://future-fs-02-32m7.vercel.app)
+
 A full-stack Customer Relationship Management (CRM) application built with React.js frontend, Node.js/Express backend, and MySQL via Sequelize.
 
 ## 🚀 Project Overview
