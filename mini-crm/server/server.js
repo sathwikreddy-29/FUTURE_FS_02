@@ -7,6 +7,14 @@ const sequelize = require('./config/database');
 // Load environment variables
 dotenv.config();
 
+// Verify critical environment variables
+if (!process.env.JWT_SECRET) {
+  console.error('⚠️  CRITICAL: JWT_SECRET not set in .env file');
+}
+if (!process.env.DB_HOST) {
+  console.error('⚠️  CRITICAL: Database credentials not set in .env file');
+}
+
 const app = express();
 
 // Middleware
@@ -29,6 +37,11 @@ const leadRoutes = require('./routes/leadRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', leadRoutes);
+
+// Health-check and root route
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'Mini CRM backend is running.' });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

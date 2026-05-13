@@ -20,17 +20,11 @@ router.post('/login', [
   const { email, password } = req.body;
 
   try {
-    // Check if admin exists
-    let admin = await Admin.findOne({ where: { email } });
+    const admin = await Admin.findOne({ where: { email } });
     if (!admin) {
-      // Create default admin if not exists
-      admin = await Admin.create({
-        email: 'admin@example.com',
-        password: 'admin123'
-      });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Check password
     const isMatch = await admin.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
@@ -52,6 +46,39 @@ router.post('/login', [
         res.json({ token });
       }
     );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   POST /api/auth/setup
+// @desc    Create initial admin account if none exists
+// @access  Public (requires setup secret)
+router.post('/setup', [
+  body('email', 'Please include a valid email').isEmail(),
+  body('password', 'Password must be at least 6 characters').isLength({ min: 6 }),
+  body('setupSecret', 'Setup secret is required').exists()
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { email, password, setupSecret } = req.body;
+
+  if (setupSecret !== process.env.SETUP_SECRET) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+    const adminCount = await Admin.count();
+    if (adminCount > 0) {
+      return res.status(400).json({ message: 'Admin account already exists' });
+    }
+
+    const admin = await Admin.create({ email, password });
+    res.json({ message: 'Admin account created', admin: { id: admin.id, email: admin.email } });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

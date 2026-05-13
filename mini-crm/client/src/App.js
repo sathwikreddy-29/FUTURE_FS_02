@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Setup from './pages/Setup';
 import './App.css';
 
 function App() {
@@ -31,8 +32,12 @@ function AppRoutes() {
         element={!admin ? <Login /> : <Navigate to="/dashboard" />}
       />
       <Route
+        path="/setup"
+        element={!admin ? <Setup /> : <Navigate to="/dashboard" />}
+      />
+      <Route
         path="/dashboard"
-        element={admin ? <Dashboard /> : <Navigate to="/login" />}
+        element={admin && admin.authenticated ? <Dashboard /> : <Navigate to="/login" />}
       />
       <Route
         path="/"

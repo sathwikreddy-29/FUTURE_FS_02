@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
@@ -70,6 +71,9 @@ const Login = () => {
         </form>
         <div style={{ marginTop: '20px', fontSize: '14px', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>
           Default credentials: admin@example.com / admin123
+          <div style={{ marginTop: '10px' }}>
+            <Link to="/setup" className="link-button">Need to create admin? Setup here</Link>
+          </div>
         </div>
       </div>
     </div>

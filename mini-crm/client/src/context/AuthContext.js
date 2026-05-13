@@ -4,12 +4,14 @@ import axios from 'axios';
 const envApiUrl = process.env.REACT_APP_API_URL;
 const apiBaseURL = envApiUrl && envApiUrl !== 'https://your-render-backend-url.onrender.com'
   ? envApiUrl
-  : 'https://mini-crm-backend.onrender.com';
+  : process.env.NODE_ENV === 'development'
+    ? '/'
+    : 'https://future-fs-02-7-pa3x.onrender.com';
 
 if (!envApiUrl || envApiUrl === 'https://your-render-backend-url.onrender.com') {
   console.warn(
     'REACT_APP_API_URL is not set or is still using the placeholder. Falling back to:',
-    apiBaseURL
+    apiBaseURL === '/' ? 'relative path/proxy' : apiBaseURL
   );
 }
 
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       // Verify token and set admin
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       // For simplicity, we'll assume token is valid if exists
-      setAdmin({ token });
+      setAdmin({ token, authenticated: true });
     }
     setLoading(false);
   }, []);
@@ -42,7 +44,9 @@ export const AuthProvider = ({ children }) => {
       const { token } = res.data;
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setAdmin({ token });
+      setAdmin({ token, authenticated: true });
+      // Small delay to ensure state is updated before navigation
+      setTimeout(() => {}, 100);
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Login failed';
