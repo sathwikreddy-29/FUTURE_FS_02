@@ -6,7 +6,7 @@ const apiBaseURL = envApiUrl && envApiUrl !== 'https://your-render-backend-url.o
   ? envApiUrl
   : process.env.NODE_ENV === 'development'
     ? '/'
-    : 'https://future-fs-02-7-pa3x.onrender.com';
+    : 'https://mini-crm-backend-l2pr.onrender.com';
 
 if (!envApiUrl || envApiUrl === 'https://your-render-backend-url.onrender.com') {
   console.warn(

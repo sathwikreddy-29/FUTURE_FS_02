@@ -24,7 +24,7 @@ const Setup = () => {
     setSuccess('');
 
     try {
-      const res = await axios.post('/api/auth/setup', { email, password, setupSecret });
+      await axios.post('/api/auth/setup', { email, password, setupSecret });
       setSuccess('Admin account created successfully. You can now login.');
       setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
